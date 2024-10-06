@@ -9,53 +9,13 @@ use TypechoPlugin\ViewStat\ViewsCore;
 $stat = \Widget\Stat::alloc();
 $posts = \Widget\Contents\Post\Admin::alloc();
 $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\Cookie::get('__typecho_all_posts'));
+ViewsCore::get_total_views(true);
 ?>
 <div class="main">
     <div class="body container">
         <?php include 'page-title.php'; ?>
         <div class="row typecho-page-main" role="main">
             <div class="col-mb-12 typecho-list">
-                <div class="clearfix">
-                    <ul class="typecho-option-tabs right">
-                        <?php if ($user->pass('editor', true) && !isset($request->uid)): ?>
-                            <li class="<?php if ($isAllPosts): ?> current<?php endif; ?>"><a
-                                    href="<?php echo $request->makeUriByRequest('__typecho_all_posts=on&page=1'); ?>"><?php _e('所有'); ?></a>
-                            </li>
-                            <li class="<?php if (!$isAllPosts): ?> current<?php endif; ?>"><a
-                                    href="<?php echo $request->makeUriByRequest('__typecho_all_posts=off&page=1'); ?>"><?php _e('我的'); ?></a>
-                            </li>
-                        <?php endif; ?>
-                    </ul>
-                    <ul class="typecho-option-tabs">
-                        <li<?php if (!isset($request->status) || 'all' == $request->get('status')): ?> class="current"<?php endif; ?>>
-                            <a href="<?php $options->adminUrl('manage-posts.php'
-                                . (isset($request->uid) ? '?uid=' . $request->filter('encode')->uid : '')); ?>"><?php _e('可用'); ?></a>
-                        </li>
-                        <li<?php if ('waiting' == $request->get('status')): ?> class="current"<?php endif; ?>><a
-                                href="<?php $options->adminUrl('manage-posts.php?status=waiting'
-                                    . (isset($request->uid) ? '&uid=' . $request->filter('encode')->uid : '')); ?>"><?php _e('待审核'); ?>
-                                <?php if (!$isAllPosts && $stat->myWaitingPostsNum > 0 && !isset($request->uid)): ?>
-                                    <span class="balloon"><?php $stat->myWaitingPostsNum(); ?></span>
-                                <?php elseif ($isAllPosts && $stat->waitingPostsNum > 0 && !isset($request->uid)): ?>
-                                    <span class="balloon"><?php $stat->waitingPostsNum(); ?></span>
-                                <?php elseif (isset($request->uid) && $stat->currentWaitingPostsNum > 0): ?>
-                                    <span class="balloon"><?php $stat->currentWaitingPostsNum(); ?></span>
-                                <?php endif; ?>
-                            </a></li>
-                        <li<?php if ('draft' == $request->get('status')): ?> class="current"<?php endif; ?>><a
-                                href="<?php $options->adminUrl('manage-posts.php?status=draft'
-                                    . (isset($request->uid) ? '&uid=' . $request->filter('encode')->uid : '')); ?>"><?php _e('草稿'); ?>
-                                <?php if (!$isAllPosts && $stat->myDraftPostsNum > 0 && !isset($request->uid)): ?>
-                                    <span class="balloon"><?php $stat->myDraftPostsNum(); ?></span>
-                                <?php elseif ($isAllPosts && $stat->draftPostsNum > 0 && !isset($request->uid)): ?>
-                                    <span class="balloon"><?php $stat->draftPostsNum(); ?></span>
-                                <?php elseif (isset($request->uid) && $stat->currentDraftPostsNum > 0): ?>
-                                    <span class="balloon"><?php $stat->currentDraftPostsNum(); ?></span>
-                                <?php endif; ?>
-                            </a></li>
-                    </ul>
-                </div>
-
                 <div class="typecho-list-operate clearfix">
                     <form method="get">
                         <div class="operate">
@@ -113,7 +73,7 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
                                        name="status"/>
                             <?php endif; ?>
                         </div>
-                    </form>
+                    </form>                  
                 </div><!-- end .typecho-list-operate -->
 
                 <form method="post" name="manage_posts" class="operate-form">

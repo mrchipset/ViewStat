@@ -74,13 +74,13 @@ class ViewsCore extends Widget implements ActionInterface
         return -1;
     }
 
-    public static function get_total_views()
+    public static function get_total_views($force=false)
     {
         # get updated time and update if expired.
         $db = Db::get();
         $cookie_key = 'ViewStat_total_views';
-        $cookie_value = Cookie::get($cookie_key);
-        if (is_null($cookie_value)) {
+        $cookie_value = Cookie::get(key: $cookie_key);
+        if (is_null($cookie_value) || $force) {
             try{
                 $total = $db->fetchObject($db->select(['SUM(views)' => 'num'])
                     ->from('table.view_summary')
